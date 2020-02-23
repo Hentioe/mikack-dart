@@ -11,27 +11,27 @@ class Platforms extends Struct {
   Pointer<Platform> data;
 }
 
+class Platform extends Struct {
+  Pointer<Utf8> domain;
+  Pointer<Utf8> name;
+}
+
 extension PlatformsPointer on Pointer<Platforms> {
   List<models.Platform> asList() {
-    var platforms = this.ref;
-    var len = platforms.len;
-    var dataPointer = platforms.data;
+    var ref = this.ref;
+    var len = ref.len;
+    var dataPointer = ref.data;
     var list = new List<models.Platform>();
     for (var i = 0; i < len; i++) {
-      var platform = dataPointer[i];
+      var item = dataPointer[i];
       list.add(models.Platform(
-          Utf8.fromUtf8(platform.domain), Utf8.fromUtf8(platform.name)));
+          Utf8.fromUtf8(item.domain), Utf8.fromUtf8(item.name)));
     }
     // 释放内存
     freePlatforms(this);
 
     return list;
   }
-}
-
-class Platform extends Struct {
-  Pointer<Utf8> domain;
-  Pointer<Utf8> name;
 }
 
 typedef platforms_func = Pointer<Platforms> Function();
@@ -43,4 +43,44 @@ typedef free_platform_array_func = Void Function(Pointer<Platforms>);
 typedef FreePlatformArray = void Function(Pointer<Platforms>);
 final FreePlatformArray freePlatforms = dylib
     .lookup<NativeFunction<free_platform_array_func>>('free_platform_array')
+    .asFunction();
+
+// 获取标签列表
+class Tags extends Struct {
+  @Int32()
+  int len;
+  Pointer<Tag> data;
+}
+
+class Tag extends Struct {
+  @Int32()
+  int value;
+  Pointer<Utf8> name;
+}
+
+extension TagsPointer on Pointer<Tags> {
+  List<models.Tag> asList() {
+    var ref = this.ref;
+    var len = ref.len;
+    var dataPointer = ref.data;
+    var list = new List<models.Tag>();
+    for (var i = 0; i < len; i++) {
+      var item = dataPointer[i];
+      list.add(models.Tag(item.value, Utf8.fromUtf8(item.name)));
+    }
+    // 释放内存
+    freeTags(this);
+
+    return list;
+  }
+}
+
+typedef tags_func = Pointer<Tags> Function();
+final tags =
+    dylib.lookup<NativeFunction<tags_func>>('tags').asFunction<tags_func>();
+
+typedef free_tag_array_func = Void Function(Pointer<Tags>);
+typedef FreeTagArray = void Function(Pointer<Tags>);
+final FreeTagArray freeTags = dylib
+    .lookup<NativeFunction<free_tag_array_func>>('free_tag_array')
     .asFunction();

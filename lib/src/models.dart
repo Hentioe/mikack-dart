@@ -4,3 +4,10 @@ class Platform {
 
   Platform(this.domain, this.name);
 }
+
+class Tag {
+  int value;
+  String name;
+
+  Tag(this.value, this.name);
+}
