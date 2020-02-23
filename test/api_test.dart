@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 import 'package:mikack/mikack.dart';
+import 'package:mikack/src/models.dart' as models;
 import 'dart:io';
 
 void main() {
@@ -9,6 +10,14 @@ void main() {
 
   test('.tags()', () {
     expect(tags().length, equals(4));
+  });
+
+  test('.findPlatforms()', () {
+    var includes = tags();
+    includes.retainWhere((t) => t.name == "中文");
+    var excludes = tags();
+    excludes.retainWhere((t) => t.name == "NSFW");
+    expect(findPlatforms(includes, excludes).length, equals(20));
   });
 }
 

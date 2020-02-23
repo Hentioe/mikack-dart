@@ -84,3 +84,12 @@ typedef FreeTagArray = void Function(Pointer<Tags>);
 final FreeTagArray freeTags = dylib
     .lookup<NativeFunction<free_tag_array_func>>('free_tag_array')
     .asFunction();
+
+// 搜索平台列表
+typedef find_platforms_func = Pointer<Platforms> Function(
+    Pointer<Int32>, Int32, Pointer<Int32>, Int32);
+typedef FindPlatforms = Pointer<Platforms> Function(
+    Pointer<Int32>, int, Pointer<Int32>, int);
+final FindPlatforms findPlatforms = dylib
+    .lookup<NativeFunction<find_platforms_func>>('find_platforms')
+    .asFunction();
