@@ -38,6 +38,22 @@ class Platform {
     comic.chapters = libmikack.chapters(extr, urlPointer).asList();
     free(urlPointer);
   }
+
+  PageIterator createPageIter(Chapter chapter) {
+    var urlPointer = Utf8.toUtf8(chapter.url);
+    var chapterPointer = libmikack.createChapterPtr(urlPointer);
+    free(urlPointer);
+    var domainPointer = Utf8.toUtf8(domain);
+    var extr = libmikack.getExtr(domainPointer);
+    free(domainPointer);
+
+    var createdIterPointer = libmikack.createPageIter(extr, chapterPointer);
+    var createdIterRef = createdIterPointer.ref;
+    chapter.pageCount = createdIterRef.count;
+    chapter.title = Utf8.fromUtf8(createdIterRef.title);
+
+    return PageIterator(createdIterPointer, createdIterRef.iter);
+  }
 }
 
 class Tag {
@@ -64,12 +80,32 @@ class Chapter {
   String title;
   String url;
   int which;
+  int pageCount = 0;
   Map<String, String> pageHeaders;
 
   Chapter(this.title, this.url, this.which, this.pageHeaders);
 
   String toString() {
     return "title: ${this.title}, url: ${this.url}, which: ${this.which}";
+  }
+}
+
+class PageIterator {
+  Pointer createdIterPointer;
+  Pointer iterPointer;
+
+  PageIterator(this.createdIterPointer, this.iterPointer);
+
+  void free() {
+    libmikack.freeCreatedPageIter(this.createdIterPointer);
+  }
+
+  String next() {
+    var addressPointer = libmikack.nextPage(this.iterPointer);
+    var address = Utf8.fromUtf8(addressPointer);
+    libmikack.freeString(addressPointer);
+
+    return address;
   }
 }
 

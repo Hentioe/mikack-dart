@@ -211,3 +211,42 @@ typedef FreeChaptersArray = void Function(Pointer<Chapters>);
 final FreeChaptersArray freeChapters = dylib
     .lookup<NativeFunction<free_chapter_array_func>>('free_chapter_array')
     .asFunction();
+
+// 创建原始章节指针
+typedef create_chapter_ptr_func = Pointer Function(Pointer<Utf8>);
+final createChapterPtr = dylib
+    .lookup<NativeFunction<create_chapter_ptr_func>>('create_chapter_ptr')
+    .asFunction<create_chapter_ptr_func>();
+
+// 创建迭代器，返回指针和一部分元数据
+class CreatedPageIter extends Struct {
+  @Int32()
+  int count;
+  Pointer<Utf8> title;
+  Pointer iter;
+}
+
+typedef create_page_iter_func = Pointer<CreatedPageIter> Function(
+    Pointer, Pointer);
+final createPageIter = dylib
+    .lookup<NativeFunction<create_page_iter_func>>('create_page_iter')
+    .asFunction<create_page_iter_func>();
+// 释放迭代器
+typedef free_created_page_iter_func = Void Function(Pointer);
+typedef FreeCreatedPageIter = void Function(Pointer);
+final FreeCreatedPageIter freeCreatedPageIter = dylib
+    .lookup<NativeFunction<free_created_page_iter_func>>(
+        'free_created_page_iter')
+    .asFunction();
+
+// 翻页
+typedef next_page_func = Pointer<Utf8> Function(Pointer iter);
+final nextPage = dylib
+    .lookup<NativeFunction<next_page_func>>('next_page')
+    .asFunction<next_page_func>();
+
+// 释放字符串内存
+typedef free_string_func = Void Function(Pointer<Utf8>);
+typedef FreeString = void Function(Pointer<Utf8>);
+final FreeString freeString =
+    dylib.lookup<NativeFunction<free_string_func>>('free_string').asFunction();

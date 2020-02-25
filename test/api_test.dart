@@ -19,6 +19,18 @@ void main() {
         chapters.forEach((c) {
           expect(c.pageHeaders["Referer"], equals(c.url));
         });
+        var chapter = chapters[0];
+        expect(chapter.pageCount, equals(0));
+        var pageIter = p.createPageIter(chapter);
+        expect(chapter.pageCount, equals(21));
+        for (var i = 0; i < chapter.pageCount; i++) {
+          var address = pageIter.next();
+          expect(address, isNotEmpty);
+          expect(address.startsWith("http"), isTrue);
+        }
+        var address = pageIter.next();
+        expect(address, isEmpty);
+        pageIter.free();
       }
     });
     var firstPlatform = list[0];
