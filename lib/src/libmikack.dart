@@ -93,3 +93,57 @@ typedef FindPlatforms = Pointer<Platforms> Function(
 final FindPlatforms findPlatforms = dylib
     .lookup<NativeFunction<find_platforms_func>>('find_platforms')
     .asFunction();
+
+// 获取 extractor
+typedef get_extr_func = Pointer Function(Pointer<Utf8>);
+final getExtr = dylib
+    .lookup<NativeFunction<get_extr_func>>('get_extr')
+    .asFunction<get_extr_func>();
+
+// 获取漫画列表
+class Comics extends Struct {
+  @Int32()
+  int len;
+  Pointer<Comic> data;
+}
+
+class Comic extends Struct {
+  Pointer<Utf8> title;
+  Pointer<Utf8> url;
+  Pointer<Utf8> cover;
+}
+
+extension ComicsPointer on Pointer<Comics> {
+  List<models.Comic> asList() {
+    var ref = this.ref;
+    var len = ref.len;
+    var dataPointer = ref.data;
+    var list = new List<models.Comic>();
+    for (var i = 0; i < len; i++) {
+      var item = dataPointer[i];
+      list.add(models.Comic(Utf8.fromUtf8(item.title), Utf8.fromUtf8(item.url),
+          Utf8.fromUtf8(item.cover)));
+    }
+    // 释放内存
+    freeComics(this);
+
+    return list;
+  }
+}
+
+typedef index_func = Pointer<Comics> Function(Pointer, Int32);
+typedef Index = Pointer<Comics> Function(Pointer, int);
+final Index index =
+    dylib.lookup<NativeFunction<index_func>>('index').asFunction();
+
+typedef free_comic_array_func = Void Function(Pointer<Comics>);
+typedef FreeComicArray = void Function(Pointer<Comics>);
+final FreeComicArray freeComics = dylib
+    .lookup<NativeFunction<free_comic_array_func>>('free_comic_array')
+    .asFunction();
+
+// 搜索漫画列表
+typedef search_func = Pointer<Comics> Function(Pointer, Pointer<Utf8>);
+final search = dylib
+    .lookup<NativeFunction<search_func>>('search')
+    .asFunction<search_func>();

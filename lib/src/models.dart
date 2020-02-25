@@ -6,7 +6,29 @@ class Platform {
   String domain;
   String name;
 
-  Platform(this.domain, this.name);
+  Platform(String domain, String name) {
+    this.domain = domain;
+    this.name = name;
+  }
+
+  List<Comic> index(int page) {
+    var domainPointer = Utf8.toUtf8(domain);
+    var extr = libmikack.getExtr(domainPointer);
+    free(domainPointer);
+
+    return libmikack.index(extr, page).asList();
+  }
+
+  List<Comic> search(String keywords) {
+    var domainPointer = Utf8.toUtf8(domain);
+    var extr = libmikack.getExtr(domainPointer);
+    free(domainPointer);
+    var keywordsPointer = Utf8.toUtf8(keywords);
+    var list = libmikack.search(extr, keywordsPointer).asList();
+    free(keywordsPointer);
+
+    return list;
+  }
 }
 
 class Tag {
@@ -14,6 +36,18 @@ class Tag {
   String name;
 
   Tag(this.value, this.name);
+}
+
+class Comic {
+  String title;
+  String url;
+  String cover;
+
+  Comic(this.title, this.url, this.cover);
+
+  String toString() {
+    return "title: ${this.title}, url: ${this.url}, cover: ${this.cover}";
+  }
 }
 
 extension TagList on List<Tag> {

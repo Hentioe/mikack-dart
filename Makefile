@@ -1,6 +1,6 @@
 CARGO_BIN ?= `which cargo`
 LIB_PATH ?= "../mikack-ffi"
-.PHONY: buildlib test
+.PHONY: buildlib test ntest
 buildlib:
 	@( cd $(LIB_PATH) && $(CARGO_BIN) build --release )
 	@mkdir libraries -p
@@ -8,3 +8,8 @@ buildlib:
 
 test:
 	@pub run test test
+
+ntest:
+	@dart2native test/api_test.dart -o api_test.native
+	@./api_test.native
+	@rm ./api_test.native

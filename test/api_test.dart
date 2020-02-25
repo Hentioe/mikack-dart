@@ -5,7 +5,21 @@ import 'dart:io';
 
 void main() {
   test('.platforms()', () {
-    expect(platforms().length, equals(31));
+    var list = platforms();
+    expect(list.length, equals(31));
+    list.forEach((p) {
+      if (p.domain == "manhua.dmzj.com") {
+        expect(p.search("猎人")[0].title, equals("+猎人"));
+      }
+    });
+    var firstPlatform = list[0];
+    var comics = firstPlatform.index(1);
+    expect(comics, isNotEmpty);
+    comics.forEach((comic) {
+      expect(comic.title, isNotEmpty);
+      expect(comic.url, isNotEmpty);
+      expect(comic.cover, isNotEmpty);
+    });
   });
 
   test('.tags()', () {
