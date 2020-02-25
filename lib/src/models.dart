@@ -29,6 +29,15 @@ class Platform {
 
     return list;
   }
+
+  void fetchChapters(Comic comic) {
+    var domainPointer = Utf8.toUtf8(domain);
+    var extr = libmikack.getExtr(domainPointer);
+    free(domainPointer);
+    var urlPointer = Utf8.toUtf8(comic.url);
+    comic.chapters = libmikack.chapters(extr, urlPointer).asList();
+    free(urlPointer);
+  }
 }
 
 class Tag {
@@ -42,11 +51,25 @@ class Comic {
   String title;
   String url;
   String cover;
+  List<Chapter> chapters;
 
   Comic(this.title, this.url, this.cover);
 
   String toString() {
     return "title: ${this.title}, url: ${this.url}, cover: ${this.cover}";
+  }
+}
+
+class Chapter {
+  String title;
+  String url;
+  int which;
+  Map<String, String> pageHeaders;
+
+  Chapter(this.title, this.url, this.which, this.pageHeaders);
+
+  String toString() {
+    return "title: ${this.title}, url: ${this.url}, which: ${this.which}";
   }
 }
 

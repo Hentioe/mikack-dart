@@ -9,7 +9,16 @@ void main() {
     expect(list.length, equals(31));
     list.forEach((p) {
       if (p.domain == "manhua.dmzj.com") {
-        expect(p.search("猎人")[0].title, equals("+猎人"));
+        var comic = p.search("灌篮高手全国大赛篇(全彩版本)")[0];
+        expect(comic.chapters, isNull);
+        expect(comic.title, equals("灌篮高手全国大赛篇(全彩版本)"));
+        p.fetchChapters(comic);
+        var chapters = comic.chapters;
+        expect(chapters, isNotEmpty);
+        expect(chapters.length, equals(80));
+        chapters.forEach((c) {
+          expect(c.pageHeaders["Referer"], equals(c.url));
+        });
       }
     });
     var firstPlatform = list[0];

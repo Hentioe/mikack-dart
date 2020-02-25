@@ -147,3 +147,67 @@ typedef search_func = Pointer<Comics> Function(Pointer, Pointer<Utf8>);
 final search = dylib
     .lookup<NativeFunction<search_func>>('search')
     .asFunction<search_func>();
+
+// 获取章节列表
+class Chapters extends Struct {
+  @Int32()
+  int len;
+  Pointer<Chapter> data;
+}
+
+class Chapter extends Struct {
+  Pointer<Utf8> title;
+  Pointer<Utf8> url;
+  @Uint32()
+  int which;
+  Pointer<Headers> page_headers;
+}
+
+class Headers extends Struct {
+  @Int32()
+  int len;
+  Pointer<Header> data;
+}
+
+class Header extends Struct {
+  Pointer<Utf8> key;
+  Pointer<Utf8> value;
+}
+
+extension ChaptersPointer on Pointer<Chapters> {
+  List<models.Chapter> asList() {
+    var ref = this.ref;
+    var len = ref.len;
+    var dataPointer = ref.data;
+    var list = new List<models.Chapter>();
+    for (var i = 0; i < len; i++) {
+      var item = dataPointer[i];
+      var phRef = item.page_headers.ref;
+      var phLen = phRef.len;
+      var phDataPointer = phRef.data;
+      var phMap = new Map<String, String>();
+      for (var i = 0; i < phLen; i++) {
+        var phItem = phDataPointer[i];
+        phMap[Utf8.fromUtf8(phItem.key)] = Utf8.fromUtf8(phItem.value);
+      }
+
+      list.add(models.Chapter(Utf8.fromUtf8(item.title),
+          Utf8.fromUtf8(item.url), item.which, phMap));
+    }
+    // 释放内存
+    freeChapters(this);
+
+    return list;
+  }
+}
+
+typedef chapters_func = Pointer<Chapters> Function(Pointer, Pointer<Utf8>);
+final chapters = dylib
+    .lookup<NativeFunction<chapters_func>>('chapters')
+    .asFunction<chapters_func>();
+
+typedef free_chapter_array_func = Void Function(Pointer<Chapters>);
+typedef FreeChaptersArray = void Function(Pointer<Chapters>);
+final FreeChaptersArray freeChapters = dylib
+    .lookup<NativeFunction<free_chapter_array_func>>('free_chapter_array')
+    .asFunction();
