@@ -11,7 +11,7 @@ List<models.Platform> findPlatforms(
   var list = libmikack
       .findPlatforms(incPointer, includes.length, excPointer, excludes.length)
       .asList();
-  // 释放指针内存
+  // 释放参数内存
   free(incPointer);
   free(excPointer);
 

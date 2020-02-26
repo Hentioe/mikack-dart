@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
 import 'package:mikack/mikack.dart';
-import 'package:mikack/src/models.dart' as models;
 import 'dart:io';
 
 void main() {
