@@ -1,4 +1,7 @@
 name: mikack
+description: Dart binding for Mikack
+# version: 1.0.0
+homepage: https://github.com/Hentioe/mikack-dart
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
