@@ -8,7 +8,7 @@ mikack 库的 Dart 绑定和包装。
 
 ## 使用教程
 
-本项目是一个规范的 Dart package，包含有一个大约 10MB 左右的 native 库。通常 BUG 由上游修复，本项目仅更新 API。
+本项目是一个规范的 Dart package，依赖一个大约 10MB 左右的 native 库。通常 BUG 由上游修复，本项目仅更新 API。
 
 添加依赖：
 
