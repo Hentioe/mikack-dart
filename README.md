@@ -15,7 +15,7 @@ mikack 库的 Dart 绑定和包装。
 ```yaml
 dependencies:
   mikack:
-    git: git@github.com:Hentioe/mikack.git
+    git: git@github.com:Hentioe/mikack-dart.git
 ```
 
 ### 基本 API
