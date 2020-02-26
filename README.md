@@ -26,7 +26,7 @@ dependencies:
 
 ```dart
 import 'package:mikack/mikack.dart';
-// 通常你不需要主动创建任何基本模型，如有必要青导入以下文件
+// 通常你不需要主动创建任何基本模型，如有必要请导入以下文件
 // import 'package:mikack/src/models.dart' as models;
 ```
 
@@ -50,7 +50,7 @@ var excludeTags = // 需排除的标签
 将标签列表作为参数
 
 ```dart
-var filteredComics = findPlatforms(includeTags, excludeTags);
+var filteredPlatforms = findPlatforms(includeTags, excludeTags);
 ```
 
 如果不需要指定包含或排除的标签，传递空列表即可。
@@ -114,7 +114,7 @@ var chapter = // 假装选中了一个漫画章节
 var headers = chapter.pageHeaders;
 
 // 将 headers 附加到链接下载中
-// 略（自行发挥）
+// 自行发挥，略
 ```
 
 ## 存在的问题
