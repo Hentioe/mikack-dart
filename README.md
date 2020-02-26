@@ -1,6 +1,6 @@
 # mikack-dart
-mikack 库的 Dart 绑定和包装。
 
+mikack 库的 Dart 绑定和包装。
 
 ## 基本介绍
 
@@ -26,11 +26,11 @@ dependencies:
 
 ```dart
 import 'package:mikack/mikack.dart';
-import 'package:mikack/src/models.dart' as models;
+// 通常你不需要主动创建任何基本模型，如有必要青导入以下文件
+// import 'package:mikack/src/models.dart' as models;
 ```
 
 #### 获取平台列表
-
 
 ```dart
 var platformList = platforms();
@@ -50,7 +50,7 @@ var excludeTags = // 需排除的标签
 将标签列表作为参数
 
 ```dart
-var filteredTags = findPlatforms(includeTags, excludeTags);
+var filteredComics = findPlatforms(includeTags, excludeTags);
 ```
 
 如果不需要指定包含或排除的标签，传递空列表即可。
@@ -58,8 +58,8 @@ var filteredTags = findPlatforms(includeTags, excludeTags);
 #### 获取漫画列表
 
 ```dart
-var platform = // 假装选中了一个平台
-var page = // 分配一个页码
+var platform =  // 假装选中了一个平台
+var page =      // 分配一个页码
 
 var comics = platform.index(page);
 ```
@@ -76,8 +76,8 @@ var comics = platform.search(keywords);
 #### 载入漫画章节
 
 ```dart
-var platform = // 假装选中了一个平台
-var comic = // 假装选中了一部漫画
+var platform =  // 假装选中了一个平台
+var comic =     // 假装选中了一部漫画
 
 platform.fetchChapters(comic);
 comic.chapters; // 章节列表已经填充好了
@@ -86,16 +86,16 @@ comic.chapters; // 章节列表已经填充好了
 #### 获取页面资源
 
 ```dart
-var platform = // 假装选中了一个平台
-var chapter = // 假装选中了一个漫画章节
+var platform =  // 假装选中了一个平台
+var chapter =   // 假装选中了一个漫画章节
 
 // 创建页面迭代器
-var pageIter = platform.createPageIter(chapter); // 传递章节是为了填充更多的元数据
-var address = pageIter.next(); // 获取下一页的资源地址
+var pageIter = platform.createPageIter(chapter);  // 传递章节是为了填充更多的元数据
+var address = pageIter.next();                    // 获取下一页的资源地址
 
-var currentPage = // 假装有个自增的当前页码
+var currentPage =   // 假装有个自增的当前页码
 if (currentPage < chapter.pageCount) {
-  pageIter.next(); // 翻页
+  pageIter.next();  // 翻页
 } else {
   // 到底啦
 }
@@ -117,6 +117,8 @@ var headers = chapter.pageHeaders;
 // 略（自行发挥）
 ```
 
-## 当前的问题
+## 存在的问题
 
-当前存在一个有关于 Dart VM 的 TLS 问题无法解决，所以无论你将本库用于服务端程序还是 Flutter 应用开发，都建议进行 native 编译，绕开 VM 环境。
+- Dart VM 的 TLS 查找存在问题
+
+  暂时无法解决，需要绕 VM 环境。所以无论你将本库用于服务端程序还是 Flutter 应用开发，都建议进行 native 编译。
