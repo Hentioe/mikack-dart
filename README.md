@@ -8,7 +8,7 @@ mikack 库的 Dart 绑定和包装。
 
 ## 使用教程
 
-本项目是一个规范的 Dart package，依赖一个大约 10MB 左右的 native 库。通常 BUG 由上游修复，本项目仅更新 API。
+本项目是一个规范的 Dart package，mikack-ffi 库是唯一 native 依赖（大约 10MB）。通常 BUG 由上游修复，本项目仅更新 API。
 
 添加依赖：
 
@@ -120,6 +120,6 @@ var headers = chapter.pageHeaders;
 ## 存在的问题
 
 1. **Dart VM 的 TLS 上下文创建失败**  
-   暂时无法解决，需要绕 VM 环境。所以无论你将本库用于服务端程序还是 Flutter 应用开发，都建议 native 编译。
+   暂时无法解决，需绕开 VM 环境。所以无论你将本库用于服务端程序还是 Flutter 应用开发，都建议 native 编译。
 1. **缺乏合理的错误处理**  
    由于没有错误返回相关的设计，在 FFI 实现上存在一些简单粗暴的处置办法。所以发生错误时将会直接 panic 进程，但这是暂时性的，因为在还之前有一些东西需要调整。
