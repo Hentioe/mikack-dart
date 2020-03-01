@@ -1,6 +1,6 @@
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
-import 'models.dart' as models;
+import '../models.dart' as models;
 import 'helper.dart' show findDynamicLibraryFile;
 
 final dylib =

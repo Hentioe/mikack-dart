@@ -27,7 +27,7 @@ dependencies:
 ```dart
 import 'package:mikack/mikack.dart';
 // 通常你不需要主动创建任何基本模型，如有必要请导入以下文件
-// import 'package:mikack/src/models.dart' as models;
+// import 'package:mikack/models.dart' as models;
 ```
 
 #### 获取平台列表

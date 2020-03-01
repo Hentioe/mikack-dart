@@ -1,5 +1,5 @@
 import 'src/libmikack.dart' as libmikack;
-import 'src/models.dart' as models;
+import 'models.dart' as models;
 import 'package:ffi/ffi.dart';
 
 List<models.Platform> platforms() => libmikack.platforms().asList();

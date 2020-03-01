@@ -1,6 +1,6 @@
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
-import 'libmikack.dart' as libmikack;
+import 'src/libmikack.dart' as libmikack;
 
 class Platform {
   String domain;
