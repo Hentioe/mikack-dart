@@ -5,10 +5,19 @@ import 'src/libmikack.dart' as libmikack;
 class Platform {
   String domain;
   String name;
+  String favicon;
+  bool isUsable;
+  bool isSearchable;
+  bool isPageable;
+  bool isHttps;
 
   Platform(String domain, String name) {
     this.domain = domain;
     this.name = name;
+  }
+
+  String toString() {
+    return 'domain: $domain, name: $name, favicon: $favicon, isUsable: $isUsable, isSearchable: $isSearchable, isPageable: $isPageable, isHttps: $isHttps';
   }
 
   List<Comic> index(int page) {

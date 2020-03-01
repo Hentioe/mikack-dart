@@ -16,6 +16,15 @@ class Platforms extends Struct {
 class Platform extends Struct {
   Pointer<Utf8> domain;
   Pointer<Utf8> name;
+  Pointer<Utf8> favicon;
+  @Uint8()
+  int is_usable;
+  @Uint8()
+  int is_searchable;
+  @Uint8()
+  int is_pageable;
+  @Uint8()
+  int is_https;
 }
 
 extension PlatformsPointer on Pointer<Platforms> {
@@ -26,8 +35,15 @@ extension PlatformsPointer on Pointer<Platforms> {
     var list = new List<models.Platform>();
     for (var i = 0; i < len; i++) {
       var item = dataPointer[i];
-      list.add(models.Platform(
-          Utf8.fromUtf8(item.domain), Utf8.fromUtf8(item.name)));
+      var p =
+          models.Platform(Utf8.fromUtf8(item.domain), Utf8.fromUtf8(item.name));
+      var favicon = Utf8.fromUtf8(item.favicon);
+      if (!favicon.isEmpty) p.favicon = favicon;
+      p.isUsable = item.is_usable == 1;
+      p.isSearchable = item.is_searchable == 1;
+      p.isPageable = item.is_pageable == 1;
+      p.isHttps = item.is_https == 1;
+      list.add(p);
     }
     // 释放内存
     freePlatforms(this);
