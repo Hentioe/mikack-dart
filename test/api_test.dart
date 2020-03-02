@@ -31,6 +31,11 @@ void main() {
         expect(address, isEmpty);
         pageIter.free();
       }
+      if (p.domain == "www.177pic.info") {
+        var comic = p.index(1)[0];
+        p.fetchChapters(comic);
+        expect(comic.chapters[0].title, isNotEmpty);
+      }
     });
     var firstPlatform = list[0];
     var comics = firstPlatform.index(1);

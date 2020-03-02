@@ -44,8 +44,11 @@ class Platform {
     var extr = libmikack.getExtr(domainPointer);
     free(domainPointer);
     var urlPointer = Utf8.toUtf8(comic.url);
-    comic.chapters = libmikack.chapters(extr, urlPointer).asList();
+    var titlePointer = Utf8.toUtf8(comic.title);
+    comic.chapters =
+        libmikack.chapters(extr, urlPointer, titlePointer).asList();
     free(urlPointer);
+    free(titlePointer);
   }
 
   PageIterator createPageIter(Chapter chapter) {
