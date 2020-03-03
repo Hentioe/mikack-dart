@@ -10,6 +10,7 @@ class Platform {
   bool isSearchable;
   bool isPageable;
   bool isHttps;
+  List<Tag> tags = [];
 
   Platform(String domain, String name) {
     this.domain = domain;

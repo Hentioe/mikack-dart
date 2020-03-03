@@ -25,6 +25,7 @@ class Platform extends Struct {
   int is_pageable;
   @Uint8()
   int is_https;
+  Pointer<Tags> tags;
 }
 
 extension PlatformsPointer on Pointer<Platforms> {
@@ -43,6 +44,7 @@ extension PlatformsPointer on Pointer<Platforms> {
       p.isSearchable = item.is_searchable == 1;
       p.isPageable = item.is_pageable == 1;
       p.isHttps = item.is_https == 1;
+      p.tags = item.tags.asList(free: false); // 包含在平台列表释放中
       list.add(p);
     }
     // 释放内存
@@ -77,7 +79,7 @@ class Tag extends Struct {
 }
 
 extension TagsPointer on Pointer<Tags> {
-  List<models.Tag> asList() {
+  List<models.Tag> asList({free = true}) {
     var ref = this.ref;
     var len = ref.len;
     var dataPointer = ref.data;
@@ -86,8 +88,7 @@ extension TagsPointer on Pointer<Tags> {
       var item = dataPointer[i];
       list.add(models.Tag(item.value, Utf8.fromUtf8(item.name)));
     }
-    // 释放内存
-    freeTags(this);
+    if (free) freeTags(this);
 
     return list;
   }

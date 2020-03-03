@@ -7,6 +7,7 @@ void main() {
     var list = platforms();
     expect(list.length, equals(31));
     list.forEach((p) {
+      expect(p.tags, isNotEmpty);
       if (p.domain == "manhua.dmzj.com") {
         var comic = p.search("灌篮高手全国大赛篇(全彩版本)")[0];
         expect(comic.chapters, isNull);
