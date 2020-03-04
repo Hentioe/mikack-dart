@@ -193,6 +193,18 @@ class Header extends Struct {
   Pointer<Utf8> value;
 }
 
+Map<String, String> readHeadersFromPtr(Pointer<Headers> headersPtr) {
+  var headersRef = headersPtr.ref;
+  var headersLen = headersRef.len;
+  var headersDataPtr = headersRef.data;
+  var headers = new Map<String, String>();
+  for (var i = 0; i < headersLen; i++) {
+    var phItem = headersDataPtr[i];
+    headers[Utf8.fromUtf8(phItem.key)] = Utf8.fromUtf8(phItem.value);
+  }
+  return headers;
+}
+
 extension ChaptersPointer on Pointer<Chapters> {
   List<models.Chapter> asList() {
     var ref = this.ref;
@@ -201,17 +213,16 @@ extension ChaptersPointer on Pointer<Chapters> {
     var list = new List<models.Chapter>();
     for (var i = 0; i < len; i++) {
       var item = dataPointer[i];
-      var phRef = item.page_headers.ref;
-      var phLen = phRef.len;
-      var phDataPointer = phRef.data;
-      var phMap = new Map<String, String>();
-      for (var i = 0; i < phLen; i++) {
-        var phItem = phDataPointer[i];
-        phMap[Utf8.fromUtf8(phItem.key)] = Utf8.fromUtf8(phItem.value);
-      }
+      var phMap = readHeadersFromPtr(item.page_headers);
 
-      list.add(models.Chapter(Utf8.fromUtf8(item.title),
-          Utf8.fromUtf8(item.url), item.which, phMap));
+      list.add(
+        models.Chapter(
+          title: Utf8.fromUtf8(item.title),
+          url: Utf8.fromUtf8(item.url),
+          which: item.which,
+          pageHeaders: phMap,
+        ),
+      );
     }
     // 释放内存
     freeChapters(this);
@@ -243,6 +254,7 @@ class CreatedPageIter extends Struct {
   @Int32()
   int count;
   Pointer<Utf8> title;
+  Pointer<Headers> headers;
   Pointer iter;
 }
 

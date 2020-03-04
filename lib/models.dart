@@ -64,6 +64,8 @@ class Platform {
     var createdIterRef = createdIterPointer.ref;
     chapter.pageCount = createdIterRef.count;
     chapter.title = Utf8.fromUtf8(createdIterRef.title);
+    var headers = libmikack.readHeadersFromPtr(createdIterRef.headers);
+    if (headers.length > 0) chapter.pageHeaders = headers;
 
     return PageIterator(createdIterPointer, createdIterRef.iter);
   }
@@ -97,7 +99,12 @@ class Chapter {
   int pageCount = 0;
   Map<String, String> pageHeaders;
 
-  Chapter(this.title, this.url, this.which, this.pageHeaders);
+  Chapter({
+    this.title,
+    this.url,
+    this.which,
+    this.pageHeaders,
+  });
 
   String toString() {
     return "title: ${this.title}, url: ${this.url}, which: ${this.which}";
@@ -120,6 +127,10 @@ class PageIterator {
     libmikack.freeString(addressPointer);
 
     return address;
+  }
+
+  String toString() {
+    return 'PageIterator(iter: $iterPointer)';
   }
 }
 

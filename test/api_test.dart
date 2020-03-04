@@ -1,3 +1,4 @@
+import 'package:mikack/models.dart';
 import 'package:test/test.dart';
 import 'package:mikack/mikack.dart';
 import 'dart:io';
@@ -36,6 +37,13 @@ void main() {
         var comic = p.index(1)[0];
         p.fetchChapters(comic);
         expect(comic.chapters[0].title, isNotEmpty);
+      }
+      if (p.domain == "www.manhuadui.com") {
+        var chapter = Chapter(
+            url:
+                'https://www.manhuadui.com/manhua/aiguanxianshideJKyuzhiyoutoudedulahan/422042.html');
+        p.createPageIter(chapter);
+        expect(chapter.pageHeaders, {'Referer': 'https://manhua.dmzj.com/'});
       }
     });
     var firstPlatform = list[0];
