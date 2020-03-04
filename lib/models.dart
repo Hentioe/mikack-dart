@@ -81,6 +81,7 @@ class Comic {
   String url;
   String cover;
   List<Chapter> chapters;
+  Map<String, String> headers = {};
 
   Comic(this.title, this.url, this.cover);
 
