@@ -10,6 +10,7 @@ class Platform {
   bool isSearchable;
   bool isPageable;
   bool isHttps;
+  bool isSearchPageable;
   List<Tag> tags = [];
 
   Platform(String domain, String name) {
@@ -18,7 +19,7 @@ class Platform {
   }
 
   String toString() {
-    return 'domain: $domain, name: $name, favicon: $favicon, isUsable: $isUsable, isSearchable: $isSearchable, isPageable: $isPageable, isHttps: $isHttps';
+    return 'domain: $domain, name: $name, favicon: $favicon, isUsable: $isUsable, isSearchable: $isSearchable, isPageable: $isPageable, isHttps: $isHttps, isSearchPageable:$isSearchPageable';
   }
 
   List<Comic> index(int page) {
@@ -107,7 +108,7 @@ class Chapter {
   });
 
   String toString() {
-    return "title: ${this.title}, url: ${this.url}, which: ${this.which}";
+    return "title: ${this.title}, url: '${this.url}', which: ${this.which}";
   }
 }
 

@@ -6,7 +6,7 @@ import 'dart:io';
 void main() {
   test('.platforms()', () {
     var list = platforms();
-    expect(list.length, equals(31));
+    expect(list.length, equals(34));
     list.forEach((p) {
       expect(p.tags, isNotEmpty);
       if (p.domain == "manhua.dmzj.com") {
@@ -33,17 +33,8 @@ void main() {
         expect(address, isEmpty);
         pageIter.free();
       }
-      if (p.domain == "www.177pic.info") {
-        var comic = p.index(1)[0];
-        p.fetchChapters(comic);
-        expect(comic.chapters[0].title, isNotEmpty);
-      }
-      if (p.domain == "www.manhuadui.com") {
-        var chapter = Chapter(
-            url:
-                'https://www.manhuadui.com/manhua/aiguanxianshideJKyuzhiyoutoudedulahan/422042.html');
-        p.createPageIter(chapter);
-        expect(chapter.pageHeaders, {'Referer': 'https://manhua.dmzj.com/'});
+      if (p.domain == "www.wuqimh.com") {
+        expect(p.isSearchPageable, isTrue);
       }
     });
     var firstPlatform = list[0];
@@ -65,7 +56,7 @@ void main() {
     includes.retainWhere((t) => t.name == "中文");
     var excludes = tags();
     excludes.retainWhere((t) => t.name == "NSFW");
-    expect(findPlatforms(includes, excludes).length, equals(20));
+    expect(findPlatforms(includes, excludes).length, equals(21));
   });
 }
 
