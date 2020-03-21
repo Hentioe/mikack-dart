@@ -48,7 +48,7 @@ void main() {
   });
 
   test('.tags()', () {
-    expect(tags().length, equals(4));
+    expect(tags().length, equals(5));
   });
 
   test('.findPlatforms()', () {
@@ -56,7 +56,7 @@ void main() {
     includes.retainWhere((t) => t.name == "中文");
     var excludes = tags();
     excludes.retainWhere((t) => t.name == "NSFW");
-    expect(findPlatforms(includes, excludes).length, equals(21));
+    expect(findPlatforms(includes, excludes).length, equals(22));
   });
 }
 

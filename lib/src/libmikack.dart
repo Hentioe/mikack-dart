@@ -25,6 +25,8 @@ class Platform extends Struct {
   int is_pageable;
   @Uint8()
   int is_https;
+  @Uint8()
+  int is_search_pageable;
   Pointer<Tags> tags;
 }
 
@@ -44,6 +46,7 @@ extension PlatformsPointer on Pointer<Platforms> {
       p.isSearchable = item.is_searchable == 1;
       p.isPageable = item.is_pageable == 1;
       p.isHttps = item.is_https == 1;
+      p.isSearchPageable = item.is_search_pageable == 1;
       p.tags = item.tags.asList(free: false); // 包含在平台列表释放中
       list.add(p);
     }
