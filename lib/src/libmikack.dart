@@ -234,7 +234,8 @@ extension ChaptersPointer on Pointer<Chapters> {
   }
 }
 
-typedef chapters_func = Pointer<Comic> Function(Pointer, Pointer<Utf8>);
+typedef chapters_func = Pointer<Comic> Function(
+    Pointer, Pointer<Utf8>, Pointer<Utf8>);
 final chapters = dylib
     .lookup<NativeFunction<chapters_func>>('chapters')
     .asFunction<chapters_func>();

@@ -46,7 +46,8 @@ class Platform {
     var extr = libmikack.getExtr(domainPointer);
     free(domainPointer);
     var urlPointer = Utf8.toUtf8(comic.url);
-    var comicPtr = libmikack.chapters(extr, urlPointer);
+    var titlePointer = Utf8.toUtf8(comic.title);
+    var comicPtr = libmikack.chapters(extr, urlPointer, titlePointer);
     var comicRef = comicPtr.ref;
 
     var newTitle = Utf8.fromUtf8(comicRef.title);
@@ -57,6 +58,7 @@ class Platform {
     comic.chapters = comicRef.chapters.asList(free: false);
 
     free(urlPointer);
+    free(titlePointer);
     libmikack.freeComic(comicPtr);
   }
 

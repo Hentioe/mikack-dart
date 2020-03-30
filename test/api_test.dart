@@ -43,6 +43,12 @@ void main() {
         p.fetchChapters(comic);
         expect(comic.cover, isNotEmpty);
       }
+      if (p.domain == "e-hentai.org") {
+        var comic = p.index(1)[0];
+        expect(comic.title, isNotEmpty);
+        p.fetchChapters(comic);
+        expect(comic.title, isNotEmpty);
+      }
     });
     var firstPlatform = list[0];
     var comics = firstPlatform.index(1);
