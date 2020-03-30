@@ -133,6 +133,7 @@ class Comic extends Struct {
   Pointer<Utf8> title;
   Pointer<Utf8> url;
   Pointer<Utf8> cover;
+  Pointer<Chapters> chapters;
 }
 
 extension ComicsPointer on Pointer<Comics> {
@@ -209,7 +210,7 @@ Map<String, String> readHeadersFromPtr(Pointer<Headers> headersPtr) {
 }
 
 extension ChaptersPointer on Pointer<Chapters> {
-  List<models.Chapter> asList() {
+  List<models.Chapter> asList({free = true}) {
     var ref = this.ref;
     var len = ref.len;
     var dataPointer = ref.data;
@@ -227,18 +228,21 @@ extension ChaptersPointer on Pointer<Chapters> {
         ),
       );
     }
-    // 释放内存
-    freeChapters(this);
+    if (free) freeChapters(this);
 
     return list;
   }
 }
 
-typedef chapters_func = Pointer<Chapters> Function(
-    Pointer, Pointer<Utf8>, Pointer<Utf8>);
+typedef chapters_func = Pointer<Comic> Function(Pointer, Pointer<Utf8>);
 final chapters = dylib
     .lookup<NativeFunction<chapters_func>>('chapters')
     .asFunction<chapters_func>();
+
+typedef free_comic_func = Void Function(Pointer<Comic>);
+typedef FreeComic = void Function(Pointer<Comic>);
+final FreeComic freeComic =
+    dylib.lookup<NativeFunction<free_comic_func>>('free_comic').asFunction();
 
 typedef free_chapter_array_func = Void Function(Pointer<Chapters>);
 typedef FreeChaptersArray = void Function(Pointer<Chapters>);

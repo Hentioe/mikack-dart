@@ -1,4 +1,3 @@
-import 'package:mikack/models.dart';
 import 'package:test/test.dart';
 import 'package:mikack/mikack.dart';
 import 'dart:io';
@@ -35,6 +34,14 @@ void main() {
       }
       if (p.domain == "www.wuqimh.com") {
         expect(p.isSearchPageable, isTrue);
+      }
+      if (p.domain == "8comic.se") {
+        var comic = p.search("生存遊戲")[0];
+        expect(comic.cover, isEmpty);
+        expect(comic.chapters, isNull);
+        expect(comic.title, equals("生存遊戲"));
+        p.fetchChapters(comic);
+        expect(comic.cover, isNotEmpty);
       }
     });
     var firstPlatform = list[0];
