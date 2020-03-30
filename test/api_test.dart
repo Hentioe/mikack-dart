@@ -47,7 +47,7 @@ void main() {
         var comic = p.index(1)[0];
         expect(comic.title, isNotEmpty);
         p.fetchChapters(comic);
-        expect(comic.title, isNotEmpty);
+        expect(comic.chapters.first.title, isNotEmpty);
       }
     });
     var firstPlatform = list[0];
