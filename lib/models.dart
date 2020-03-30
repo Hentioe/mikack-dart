@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
 import 'src/libmikack.dart' as libmikack;
+import 'src/helper.dart';
 
 class Platform {
   String domain;
@@ -27,7 +28,11 @@ class Platform {
     var extr = libmikack.getExtr(domainPointer);
     free(domainPointer);
 
-    return libmikack.index(extr, page).asList();
+    var comics = libmikack.index(extr, page);
+    // 检查错误
+    var e = checkError();
+    if (e != null) throw e;
+    return comics.asList();
   }
 
   List<Comic> search(String keywords) {
@@ -35,10 +40,13 @@ class Platform {
     var extr = libmikack.getExtr(domainPointer);
     free(domainPointer);
     var keywordsPointer = Utf8.toUtf8(keywords);
-    var list = libmikack.search(extr, keywordsPointer).asList();
+    var comics = libmikack.search(extr, keywordsPointer);
     free(keywordsPointer);
+    // 检查错误
+    var e = checkError();
+    if (e != null) throw e;
 
-    return list;
+    return comics.asList();
   }
 
   void fetchChapters(Comic comic) {

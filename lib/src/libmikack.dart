@@ -6,6 +6,20 @@ import 'helper.dart' show findDynamicLibraryFile;
 final dylib =
     DynamicLibrary.open(findDynamicLibraryFile('mikack_ffi', 'libraries'));
 
+// 获取和读取错误相关绑定
+typedef last_error_length_func = Int32 Function();
+typedef LastErrorLength = int Function();
+final LastErrorLength lastErrorLength = dylib
+    .lookup<NativeFunction<last_error_length_func>>('last_error_length')
+    .asFunction();
+
+typedef last_error_message_func = Int32 Function(
+    Pointer<Utf8> buffer, Int32 length);
+typedef LastErrorMessage = int Function(Pointer<Utf8> buffer, int length);
+final LastErrorMessage lastErrorMessage = dylib
+    .lookup<NativeFunction<last_error_message_func>>('last_error_message')
+    .asFunction();
+
 // 获取平台列表
 class Platforms extends Struct {
   @Int32()
