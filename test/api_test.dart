@@ -28,8 +28,11 @@ void main() {
           expect(address, isNotEmpty);
           expect(address.startsWith("http"), isTrue);
         }
-        var address = pageIter.next();
-        expect(address, isEmpty);
+        try {
+          pageIter.next();
+        } catch (e) {
+          expect(e.toString(), equals('Exception: No next page'));
+        }
         pageIter.free();
       }
       if (p.domain == "www.wuqimh.com") {

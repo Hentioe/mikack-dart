@@ -56,17 +56,19 @@ class Platform {
     var urlPointer = Utf8.toUtf8(comic.url);
     var titlePointer = Utf8.toUtf8(comic.title);
     var comicPtr = libmikack.chapters(extr, urlPointer, titlePointer);
-    var comicRef = comicPtr.ref;
+    free(urlPointer);
+    free(titlePointer);
+    // 检查错误
+    var e = checkError();
+    if (e != null) throw e;
 
+    var comicRef = comicPtr.ref;
     var newTitle = Utf8.fromUtf8(comicRef.title);
     var newCover = Utf8.fromUtf8(comicRef.cover);
     if (newTitle.isNotEmpty) comic.title = newTitle;
     if (newCover.isNotEmpty) comic.cover = newCover;
-
     comic.chapters = comicRef.chapters.asList(free: false);
 
-    free(urlPointer);
-    free(titlePointer);
     libmikack.freeComic(comicPtr);
   }
 
@@ -79,6 +81,10 @@ class Platform {
     free(domainPointer);
 
     var createdIterPointer = libmikack.createPageIter(extr, chapterPointer);
+    // 检查错误
+    var e = checkError();
+    if (e != null) throw e;
+
     var createdIterRef = createdIterPointer.ref;
     chapter.pageCount = createdIterRef.count;
     chapter.title = Utf8.fromUtf8(createdIterRef.title);
@@ -141,6 +147,9 @@ class PageIterator {
 
   String next() {
     var addressPointer = libmikack.nextPage(this.iterPointer);
+    // 检查错误
+    var e = checkError();
+    if (e != null) throw e;
     var address = Utf8.fromUtf8(addressPointer);
     libmikack.freeString(addressPointer);
 
