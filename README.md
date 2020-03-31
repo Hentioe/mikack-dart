@@ -4,7 +4,7 @@ mikack 库的 Dart 绑定和包装。
 
 ## 基本介绍
 
-本项目是 [Mikack](https://github.com/Hentioe/mikack) 生态的一部分，是官方实现的下游绑定，主要用于 **Flutter** 应用。
+本项目是 [mikack](https://github.com/Hentioe/mikack) 生态的一部分，是官方实现的下游绑定，主要用于 **Flutter** 应用。
 
 ## 使用教程
 
