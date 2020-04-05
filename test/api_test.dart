@@ -30,22 +30,22 @@ void main() {
         }
         try {
           pageIter.next();
-        } catch (e) {
-          expect(e.toString(), equals('Exception: No next page'));
+        } on MikackException catch (e) {
+          expect(e.toString(), equals('No next page'));
         }
         pageIter.free();
       }
       if (p.domain == "www.wuqimh.com") {
         expect(p.isSearchPageable, isTrue);
       }
-      if (p.domain == "8comic.se") {
-        var comic = p.search("生存遊戲")[0];
-        expect(comic.cover, isEmpty);
-        expect(comic.chapters, isNull);
-        expect(comic.title, equals("生存遊戲"));
-        p.fetchChapters(comic);
-        expect(comic.cover, isNotEmpty);
-      }
+      // if (p.domain == "8comic.se") {
+      //   var comic = p.search("生存遊戲")[0];
+      //   expect(comic.cover, isEmpty);
+      //   expect(comic.chapters, isNull);
+      //   expect(comic.title, equals("生存遊戲"));
+      //   p.fetchChapters(comic);
+      //   expect(comic.cover, isNotEmpty);
+      // }
       if (p.domain == "e-hentai.org") {
         var comic = p.index(1)[0];
         expect(comic.title, isNotEmpty);

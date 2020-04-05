@@ -2,6 +2,8 @@ import 'src/libmikack.dart' as libmikack;
 import 'models.dart' as models;
 import 'package:ffi/ffi.dart';
 
+export 'src/exceptions.dart';
+
 List<models.Platform> platforms() => libmikack.platforms().asList();
 List<models.Tag> tags() => libmikack.tags().asList();
 List<models.Platform> findPlatforms(

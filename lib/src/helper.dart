@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:ffi/ffi.dart';
+import 'exceptions.dart';
 import 'libmikack.dart' as libmikack;
 
 String findDynamicLibraryFile(String name, String dir) {
@@ -8,10 +9,10 @@ String findDynamicLibraryFile(String name, String dir) {
   if (Platform.isLinux) return '${dir}lib${name}.so';
   if (Platform.isMacOS) return '${dir}lib${name}.dylib';
   if (Platform.isWindows) return '${dir}${name}.dll';
-  throw Exception("Platform not implemented");
+  throw MikackException("Platform not implemented");
 }
 
-Exception checkError() {
+MikackException checkError() {
   var errLen = libmikack.lastErrorLength();
   if (errLen > 0) {
     // 发生错误，直接抛出异常
@@ -19,7 +20,7 @@ Exception checkError() {
     libmikack.lastErrorMessage(errBuf, errLen);
     var errMsg = Utf8.fromUtf8(errBuf);
     free(errBuf);
-    return Exception(errMsg);
+    return MikackException(errMsg);
   }
   return null;
 }
