@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+
 import 'package:ffi/ffi.dart';
 import 'exceptions.dart';
 import 'libmikack.dart' as libmikack;
@@ -16,7 +17,7 @@ MikackException checkError() {
   var errLen = libmikack.lastErrorLength();
   if (errLen > 0) {
     // 发生错误，直接抛出异常
-    var errBuf = Utf8.toUtf8('');
+    var errBuf = allocate<Utf8>();
     libmikack.lastErrorMessage(errBuf, errLen);
     var errMsg = Utf8.fromUtf8(errBuf);
     free(errBuf);
