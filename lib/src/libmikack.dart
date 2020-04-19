@@ -185,6 +185,14 @@ final search = dylib
     .lookup<NativeFunction<search_func>>('search')
     .asFunction<search_func>();
 
+// 分页搜索漫画列表
+typedef paginated_search_func = Pointer<Comics> Function(
+    Pointer, Pointer<Utf8>, Uint32);
+typedef PaginatedSearch = Pointer<Comics> Function(Pointer, Pointer<Utf8>, int);
+final PaginatedSearch paginated_search = dylib
+    .lookup<NativeFunction<paginated_search_func>>('paginated_search')
+    .asFunction();
+
 // 获取章节列表
 class Chapters extends Struct {
   @Int32()

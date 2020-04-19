@@ -49,6 +49,20 @@ class Platform {
     return comics.asList();
   }
 
+  List<Comic> paginatedSearch(String keywords, int page) {
+    var domainPointer = Utf8.toUtf8(domain);
+    var extr = libmikack.getExtr(domainPointer);
+    free(domainPointer);
+    var keywordsPointer = Utf8.toUtf8(keywords);
+    var comics = libmikack.paginated_search(extr, keywordsPointer, page);
+    free(keywordsPointer);
+    // 检查错误
+    var e = checkError();
+    if (e != null) throw e;
+
+    return comics.asList();
+  }
+
   void fetchChapters(Comic comic) {
     var domainPointer = Utf8.toUtf8(domain);
     var extr = libmikack.getExtr(domainPointer);
